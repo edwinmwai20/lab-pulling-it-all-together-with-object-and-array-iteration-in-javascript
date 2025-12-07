@@ -114,3 +114,142 @@ function gameObject() {
         },
     };
 }
+
+
+
+function allPlayers() {
+    const game = gameObject();
+    const players = {};
+
+    for (const side in game) {
+        const teamPlayers = game[side].players;
+
+        for (const player in teamPlayers) {
+            players[player] = teamPlayers[player];
+        }
+    }
+    return players;
+}
+
+function numPointsScored(playerName) {
+    return allPlayers()[playerName].points;
+}
+
+function shoeSize(playerName) {
+    return allPlayers()[playerName].shoe;
+}
+
+function teamColors(teamName) {
+    const game = gameObject();
+
+    for (const side in game) {
+        if (game[side].teamName === teamName) {
+            return game[side].colors;
+        }
+    }
+}
+
+function teamNames() {
+    const game = gameObject();
+    return [game.home.teamName, game.away.teamName];
+}
+
+
+function playerNumbers(teamName) {
+    const game = gameObject();
+    const nums = [];
+
+    for (const side in game) {
+        if (game[side].teamName === teamName) {
+            const players = game[side].players;
+
+            for (const player in players) {
+                nums.push(players[player].number);
+            }
+        }
+    }
+    return nums;
+}
+
+function playerStats(playerName) {
+    return allPlayers()[playerName];
+}
+
+
+function bigShoeRebounds() {
+    const players = allPlayers();
+    let biggestShoe = 0;
+    let rebounds = 0;
+
+    for (const name in players) {
+        const p = players[name];
+
+        if (p.shoe > biggestShoe) {
+            biggestShoe = p.shoe;
+            rebounds = p.rebounds;
+        }
+    }
+    return rebounds;
+}
+
+function mostPointsScored() {
+    const players = allPlayers();
+    let maxPoints = 0;
+    let topPlayer = "";
+
+    for (const name in players) {
+        const pts = players[name].points;
+
+        if (pts > maxPoints) {
+            maxPoints = pts;
+            topPlayer = name;
+        }
+    }
+    return topPlayer;
+}
+
+function winningTeam() {
+    const game = gameObject();
+    let homeScore = 0;
+    let awayScore = 0;
+
+    for (const player in game.home.players) {
+        homeScore += game.home.players[player].points;
+    }
+
+    for (const player in game.away.players) {
+        awayScore += game.away.players[player].points;
+    }
+
+    return homeScore > awayScore ? game.home.teamName : game.away.teamName;
+}
+
+function playerWithLongestName() {
+    const players = allPlayers();
+    let longest = "";
+
+    for (const name in players) {
+        if (name.length > longest.length) {
+            longest = name;
+        }
+    }
+    return longest;
+}
+
+function doesLongNameStealATon() {
+    const players = allPlayers();
+    const longest = playerWithLongestName();
+
+    let maxSteals = 0;
+    let topStealer = "";
+
+    for (const name in players) {
+        if (players[name].steals > maxSteals) {
+            maxSteals = players[name].steals;
+            topStealer = name;
+        }
+    }
+
+    return topStealer === longest;
+}
+
